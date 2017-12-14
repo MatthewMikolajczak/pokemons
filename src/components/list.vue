@@ -3,13 +3,13 @@
     <p>List of all available pokemons:</p>
     <p><b>{{loading}}</b></p>
     <table>
-      <tr v-for="pokemon in pokemons">
-        <td>{{pokemon.id}}</td>
+      <tr v-for="(pokemon, index) in pokemons">
+        <td>{{pokemons[index].id}}</td>
         <td class="name">
-          {{pokemon.name}}
+          {{pokemons[index].name}}
         </td>
         <td>
-          <img v-bind:src="pokemon.sprites.front_default">
+          <img v-bind:src="pokemons[index].img">
         </td>
       </tr>
     </table>
@@ -28,15 +28,15 @@ export default {
   methods: {
     getPokemon(id) {
       if(this.pokemons[0] == undefined) this.loading = "LOADING..."
-      var link = 'http://pokeapi.salestock.net/api/v2/pokemon/' + id + '/';
+      var link = 'https://pokeapi.co/api/v2/pokemon/' + id + '/';
       this.$http.get(link)
         .then(response => response.json())
-        .then(result => this.pokemons.push(result))
+        .then(result => this.pokemons.push({name:result.name, id:result.id, img:result.sprites.front_default}))
         .then(result => this.loading = "")
     }
   },
   created: function () {
-    for(var i = 1; i <= 8; i++) this.getPokemon(i)
+    for(var i = 1; i <= 721; i++) this.getPokemon(i)
   }
 }
 </script>
